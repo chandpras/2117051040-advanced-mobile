@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:justduit/screens/login_screen.dart';
+import 'package:justduit/screens/signup_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -23,12 +25,12 @@ class OnboardingScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: 16, bottom: 16),
-                    child: Text("Let's start the journey", style: TextStyle(fontFamily: 'Poppins', fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black), textAlign: TextAlign.center)
+                    child: Text("Let's start the journey", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black), textAlign: TextAlign.center)
                   ),
                   
                   Padding(
                     padding: EdgeInsets.only(right: 35, left: 35),
-                    child: Text("Experience seamless digital transactions with JustDuit", style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromARGB(255, 164, 168, 174)), textAlign: TextAlign.center)
+                    child: Text("Experience seamless digital transactions with JustDuit", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromARGB(255, 164, 168, 174)), textAlign: TextAlign.center)
                   ),
 
                   Padding(
@@ -38,16 +40,21 @@ class OnboardingScreen extends StatelessWidget {
                       height: 52,
                       child: ElevatedButton(
                         style: ButtonStyle(backgroundColor:MaterialStateProperty.all<Color>(Color(0xFF1E90FF)),foregroundColor:MaterialStateProperty.all<Color>(Colors.white),),
-                        onPressed: () {}, child: Text("Get Started",style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),)
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                        }, child: Text("Get Started",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),)
                         )
                     )
                   ),
 
-                  Padding(
-                      padding: EdgeInsets.only(top: 8, bottom: 14),
-                      child: InkWell( onTap: () {}, child: Text("I already have an account", style: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w400, color: Color.fromARGB(255, 164, 168, 174)), textAlign: TextAlign.center)
-                      )
-                  ),
+                  Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
+                        },
+                        child: Text("Create New Account", style: TextStyle(color: Color.fromARGB(255, 164, 168, 174)),)
+                        ),
+                    )
                   
                 ],
               ),

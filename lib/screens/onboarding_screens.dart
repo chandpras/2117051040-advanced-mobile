@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:justduit/screens/form_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -38,7 +39,9 @@ class OnboardingScreen extends StatelessWidget {
                       height: 52,
                       child: ElevatedButton(
                         style: ButtonStyle(backgroundColor:MaterialStateProperty.all<Color>(Color(0xFF1E90FF)),foregroundColor:MaterialStateProperty.all<Color>(Colors.white),),
-                        onPressed: () {}, child: Text("Get Started",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),)
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => FormScreen()));
+                        }, child: Text("Get Started",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),)
                         )
                     )
                   ),

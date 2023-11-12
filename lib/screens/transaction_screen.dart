@@ -12,24 +12,32 @@ class TransactionScreen extends StatefulWidget {
 class _TransactionScreenState extends State<TransactionScreen> {
   List<TransactionModel> data = [
     TransactionModel(
-      transactionCategory: "QR",
-      date: "2021-10-10",
-      amount: 10000,
-    ),
-    TransactionModel(
+      transactionIcon: Icons.add,
       transactionCategory: "Top Up",
-      date: "2021-10-10",
-      amount: 70000,
+      transactionDate: "Oct 11",
+      transactionOperator: "+",
+      transactionAmount: 100000,
     ),
     TransactionModel(
-      transactionCategory: "Mobile",
-      date: "2021-10-10",
-      amount: 2000000,
+      transactionIcon: Icons.splitscreen_outlined,
+      transactionCategory: "Split",
+      transactionDate: "Oct 9",
+      transactionOperator: "-",
+      transactionAmount: 700000,
     ),
     TransactionModel(
-      transactionCategory: "Sent",
-      date: "2021-10-10",
-      amount: 100000,
+      transactionIcon: Icons.payments_outlined,
+      transactionCategory: "Withdraw",
+      transactionDate: "Sept 30",
+      transactionOperator: "-",
+      transactionAmount: 200000,
+    ),
+    TransactionModel(
+      transactionIcon: Icons.call_received,
+      transactionCategory: "Receive",
+      transactionDate: "Aug 12",
+      transactionOperator: "+",
+      transactionAmount: 200000,
     ),
   ];
 
@@ -37,40 +45,68 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Transaction"),
+        title: Text("History", style: TextStyle(fontWeight: FontWeight.bold),),
+        centerTitle: true,
       ),
-      body: FutureBuilder(
+      body: SafeArea(
+        child: FutureBuilder(
         future: Future.delayed(Duration(seconds: 1)),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.connectionState == ConnectionState.done){
             return RefreshIndicator(
               onRefresh: () {
                 return Future.delayed(Duration(seconds: 3));
               },
-              child: ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+              
+              child: Container(
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
                       child: Row(
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only( top: 16, bottom: 16, right: 16),
+                            child: Container(
+                             padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(shape: BoxShape.circle, color: data[index].transactionOperator == "+"
+                              ? Color.fromARGB(255, 229, 247, 238)
+                              : Color.fromARGB(255, 255, 224, 239)
+                             ),
+                             child: Icon(data[index].transactionIcon, color: data[index].transactionOperator == "+"
+                              ? Color.fromARGB(255, 46, 163, 104)
+                              : Color.fromARGB(255, 248, 0, 119), size: 30,),
+                            ),
+                          ),
+
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(data[index].transactionCategory!),
-                              Text(data[index].date!)
+                              Text(
+                                data[index].transactionCategory!,
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                data[index].transactionDate!,
+                                style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
                             ],
                           ),
+
                           Spacer(),
-                          Text(NumberFormat.currency(locale: "id")
-                              .format(data[index].amount)
-                              .toString()),
+                          Text(data[index].transactionOperator! + NumberFormat.currency(locale: "id")
+                              .format(data[index].transactionAmount)
+                              .toString(),
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             );
           } else {
@@ -79,6 +115,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
             );
           }
         },
+       ),
       ),
     );
   }

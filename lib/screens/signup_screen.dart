@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:justduit/screens/login_screen.dart';
+import 'package:justduit/screens/root_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -21,6 +23,30 @@ class _SignupScreenState extends State<SignupScreen> {
 
   TextEditingController confirmController = TextEditingController();
   bool isConfirmValid = true;
+
+  void setName(String name) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("name", name);
+  }
+
+  void setEmail(String email) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("email", email);
+  }
+
+  void redirect() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.containsKey("name") && prefs.containsKey("email")){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RootScreen()));
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    redirect();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +173,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                   isPasswordValid = passwordController.text.isNotEmpty;
                                   isConfirmValid = confirmController.text == passwordController.text;
                                 });
+
+                                if(isNameValid && isEmailValid && isPasswordValid && isConfirmValid) {
+                                  setName(nameController.text);
+                                  Navigator.push(context, MaterialPageRoute(builder: (builder) => RootScreen()));
+                                }
                               },
                             child: Text("Continue",style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),)
                           )

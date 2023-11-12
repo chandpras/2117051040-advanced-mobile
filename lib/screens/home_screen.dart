@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,6 +38,28 @@ class _HomeScreenState extends State<HomeScreen> {
     "Get exciting cashback offers on topping up your game balance"
   ];
 
+  var name = "";
+
+  void getName() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.containsKey("name")){
+      setState(() {
+        name = prefs.getString("name") ?? "User";
+      });
+    }else{
+      setState(() {
+        name = "User";
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text( "Hai,", style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 164, 168, 174),),),
-                          Text( "Shanon", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                          Text( "$name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                         ],
                       ),
                     ],

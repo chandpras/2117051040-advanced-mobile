@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:justduit/screens/root_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -10,8 +12,27 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen> {
 
-  TextEditingController emailController = TextEditingController();
-  bool isEmailValid = false;
+  TextEditingController nameController = TextEditingController();
+  bool isNameValid = false;
+
+  void setName(String name) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("name", name);
+  }
+
+  void redirect() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.containsKey("name")){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RootScreen()));
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    redirect();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,38 +61,38 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   Row(
                     children: [
-                      Text("E-Mail"),
+                      Text("Nama"),
                       Text("*", style: TextStyle(color: Colors.red),)
                     ],
                   ),
                   SizedBox(height: 8,),
                   TextField(
-                    controller: emailController,
+                    controller: nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16)
                       ),
-                      errorText: isEmailValid ? null : "E-mail tidak valid",
+                      errorText: isNameValid ? null : "Nama tidak valid",
                     ),
                   ),
 
                   SizedBox(height: 16,),
 
-                  Row(
-                    children: [
-                      Text("Password"),
-                      Text("*", style: TextStyle(color: Colors.red),)
-                    ],
-                  ),
-                  SizedBox(height: 8,),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16)
-                      )
-                    ),
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Text("Password"),
+                  //     Text("*", style: TextStyle(color: Colors.red),)
+                  //   ],
+                  // ),
+                  // SizedBox(height: 8,),
+                  // TextField(
+                  //   obscureText: true,
+                  //   decoration: InputDecoration(
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(16)
+                  //     )
+                  //   ),
+                  // ),
 
                   SizedBox(height: 16,),
 
@@ -80,8 +101,13 @@ class _FormScreenState extends State<FormScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          isEmailValid = emailController.text.isNotEmpty;
+                          isNameValid = nameController.text.isNotEmpty;
                         });
+
+                        if(isNameValid) {
+                          setName(nameController.text);
+                          Navigator.push(context, MaterialPageRoute(builder: (builder) => RootScreen()));
+                        }
                       },
                      child: Text("Daftar")
                     ),

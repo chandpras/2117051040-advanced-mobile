@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:justduit/screens/form_screen.dart';
 import 'package:justduit/screens/home_screen.dart';
+import 'package:justduit/screens/profile_screen.dart';
 import 'package:justduit/screens/transaction_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _RootScreenState extends State<RootScreen> {
     Container(
       color: Colors.blue,
     ),
+    ProfileScreen(),
   ];
 
   @override
@@ -29,12 +31,13 @@ class _RootScreenState extends State<RootScreen> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.red,
+        unselectedItemColor: Colors.grey,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.money), label: "Transaction"),
-          BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: "QR Code"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.description_outlined), label: "History"),
+          BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_outlined), label: "QR Code"),
+          BottomNavigationBarItem(icon: Icon(Icons.redeem_outlined), label: "Rewards"),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: "Profile"),
         ],
         currentIndex: _currentIndex,
         onTap: ((value) {
